@@ -11,20 +11,28 @@ on:
 
 jobs:
 
+jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-
+    - uses: actions/checkout@v3
+    
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
         go-version: '1.26'
-    
+
+    # ШАГ 1: Линтер. Проверяем стиль и потенциальные проблемы.
+    # Если тут ошибка — нет смысла запускать тесты и сборку.
+    - name: Lint
+      run: golangci-lint run
+
+    # ШАГ 2: Тесты. Проверяем логику. Компиляция тут происходит автоматически.
+    # Если тесты падают — сборка не нужна (если только она не нужна для артефакта).
     - name: Test
       run: go test -v ./...
 
+    # ШАГ 3: Сборка. Делаем бинарник только если всё выше прошло успешно.
+    # Это экономит ресурсы раннера, если тесты или линтер упали.
     - name: Build
       run: go build -v ./...
-
-

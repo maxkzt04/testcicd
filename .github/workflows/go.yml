@@ -1,7 +1,7 @@
 
 name: Go
 
-on:
+on:https://github.com/maxkzt04/testcicd/pulls
   push:
     branches: ["main"]
 

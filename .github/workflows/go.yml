@@ -1,0 +1,45 @@
+
+name: Go
+
+on:
+  push:
+    branches: ["main"]
+
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Получаем исходный код
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Устанавливаем Go
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version: '1.26'
+          cache: true
+
+      # 3. Проверяем зависимости
+      - name: Verify dependencies
+        run: go mod verify
+
+      # 4. Линтер
+      # Если линтер находит ошибку — следующие шаги не выполняются
+      - name: Lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          version: latest
+
+      # 5. Unit-тесты
+      - name: Run Unit Tests
+        run: go test -v ./pkg/... ./internal/...
+
+      # 6. Сборка приложения
+      # Выполняется только если lint и tests прошли успешно
+      - name: Build
+        run: go build -v ./cmd/myapp

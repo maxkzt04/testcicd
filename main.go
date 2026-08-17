@@ -6,10 +6,6 @@ func main() {
 	fmt.Println(hello())
 }
 
-func MaxInt(a, b int) int {
-	if a >= b {
-		return a
-	}
-
-	return b
+func hello() string {
+	return "Hello Go" // эту строку исправили Go теперь не go
 }

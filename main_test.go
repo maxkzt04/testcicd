@@ -1,19 +1,13 @@
 package main
 
-import (
-	"testing"
-)
+import "testing"
 
-func TestMaxInt(t *testing.T) {
-	a, b := 2, 7
+func TestHello(t *testing.T) {
+	want := "Hello Go"
 
-	res := MaxInt(a, b)
+	got := hello()
 
-	if res != b {
-		t.Errorf("expected %d, got %d", b, res)
+	if want != got {
+		t.Fatalf("want %s, got %s\n", want, got)
 	}
-}
-
-func TestMain(m *testing.M) {
-	main()
 }
